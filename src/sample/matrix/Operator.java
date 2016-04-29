@@ -1,4 +1,6 @@
-package sample;
+package sample.matrix;
+
+import javafx.stage.Stage;
 
 /**
  * Created by golem765 on 16.04.16.
@@ -15,8 +17,8 @@ public class Operator {
         for(int k = 0; k < amount; k++)
         {
             int multiplier = (int)(Math.random()*3)+1;
-            int i = (int)(Math.random()*matrix.getSize());
-            int j = (int)(Math.random()*matrix.getSize());
+            int i = (int)(Math.random()*matrix.getAmountRows());
+            int j = (int)(Math.random()*matrix.getAmountColumns());
             if(i == j)
                 continue;
             int choose = (int)(Math.random()*2);
@@ -29,6 +31,10 @@ public class Operator {
                     OperationSwapLines(i, j);
                     break;
             }
+        }
+        if(matrix instanceof LinearOperator)
+        {
+            ((LinearOperator) matrix).setBaseOperator(matrix.getIndependentInsideMatrix());
         }
     }
 
@@ -44,7 +50,13 @@ public class Operator {
         matrix.SwapColumns(j, i);
     }
 
-    public Matrix getModifiedMatrix() {
-        return matrix;
+    public void powerMatrix(int n)throws CloneNotSupportedException
+    {
+        Matrix tmp = (Matrix)matrix.clone();
+        tmp.matrix = this.matrix.getIndependentInsideMatrix();
+        for(int i = 1; i < n; i++)
+        {
+            matrix.multiplyRight(tmp);
+        }
     }
 }
