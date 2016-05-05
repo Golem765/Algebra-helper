@@ -49,6 +49,10 @@ public class Controller {
         model.powerMatrix(n);
     }
 
+    public Matrix getMatrix()
+    {
+        return model.getMatrix();
+    }
     public void showMatrix(Stage stage)
     {
         model.showMatrix(stage);

@@ -3,6 +3,7 @@ package sample.model;
 import javafx.stage.Stage;
 import sample.matrix.Eigenvalue;
 import sample.matrix.LinearOperator;
+import sample.matrix.Matrix;
 import sample.matrix.Operator;
 import sample.view.View;
 
@@ -62,6 +63,11 @@ public class Model {
     {
         matrix.initEigenvalues(eigenvalues);
         matrix.initJordanForm();
+    }
+
+    public Matrix getMatrix()
+    {
+        return matrix;
     }
 
 }

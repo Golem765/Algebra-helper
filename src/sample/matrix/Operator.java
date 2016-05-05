@@ -1,6 +1,5 @@
 package sample.matrix;
 
-import javafx.stage.Stage;
 
 /**
  * Created by golem765 on 16.04.16.
@@ -16,7 +15,7 @@ public class Operator {
     {
         for(int k = 0; k < amount; k++)
         {
-            int multiplier = (int)(Math.random()*3)+1;
+            int multiplier = (int)(Math.random()*1)+1;
             int i = (int)(Math.random()*matrix.getAmountRows());
             int j = (int)(Math.random()*matrix.getAmountColumns());
             if(i == j)

@@ -13,6 +13,7 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import sample.ConsoleHelper;
 import sample.Controller;
 import sample.matrix.Eigenvalue;
 import sample.matrix.LinearOperator;
@@ -96,6 +97,9 @@ public class MatrixView implements View {
         rootSP.add(amountOperations, 0, 3);
         rootSP.add(operations, 1, 3);
         rootSP.add(success, 1, 7);
+        Button print = new Button("print to console");
+        rootSP.add(print, 2, 4);
+        print.setOnAction(event -> ConsoleHelper.printToConsole(controller.getMatrix()));
         changem.setOnAction(event -> {
             if(changem.getText().equals("Reset and change"))
                 controller.resetMatrix();
@@ -202,10 +206,19 @@ public class MatrixView implements View {
         for(Map.Entry<Eigenvalue, LinearOperator> pair :controller.createEDependentMatrixs().entrySet())
         {
             stages.put(pair.getKey(), new Stage());
+            Button[] buttons = new Button[5];
             Button btn = new Button("λ = "+pair.getKey().getValue());
+            buttons[0] = btn;
             Button multiply = new Button("Power");
+            buttons[1] = multiply;
             Button reset = new Button("Reset");
+            buttons[2] = reset;
             Button rank = new Button("Get rank");
+            buttons[3] = rank;
+            Button printTex = new Button("Print matrix to console");
+            buttons[4] = printTex;
+            printTex.setOnAction(event ->
+                ConsoleHelper.printToConsole(pair.getValue()));
             rank.setOnAction(event ->
             {
                 int r = pair.getValue().getRank0();
@@ -215,16 +228,16 @@ public class MatrixView implements View {
             {
                 stages.get(pair.getKey()).close();
                 pair.getValue().resetToBaseOperator();
-                pair.getValue().matrixView(stages.get(pair.getKey()), multiply, reset, rank);
+                pair.getValue().matrixView(stages.get(pair.getKey()),buttons);
                 rank.setText("Get rank");
             });
             multiply.setOnAction(event ->{
                 stages.get(pair.getKey()).close();
                 pair.getValue().multiplyRight(pair.getValue().getBaseOperator());
-                pair.getValue().matrixView(stages.get(pair.getKey()), multiply, reset, rank);
+                pair.getValue().matrixView(stages.get(pair.getKey()), buttons);
                 rank.setText("Get rank");
             });
-            btn.setOnAction(event -> pair.getValue().matrixView(stages.get(pair.getKey()), multiply, reset, rank));
+            btn.setOnAction(event -> pair.getValue().matrixView(stages.get(pair.getKey()), buttons));
             ret.add(btn);
         }
         return ret;
